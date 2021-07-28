@@ -180,7 +180,7 @@ router.get('/vnpay_ipn', function (req, res, next) {
                                                     else {
                                                         if (course.type == Constants.COURSE_TYPES.PROGRAMING) {
                                                             userProgress = new UserProgress({
-                                                                user: res.locals.user.sub,
+                                                                user: payment.user,
                                                                 course: course._id,
                                                             });
                                                             userProgress.save(function (err) {
