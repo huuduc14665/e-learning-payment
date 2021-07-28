@@ -6,10 +6,9 @@ const User = require('../models/user.model')
 const Course = require('../models/course.model')
 const UserProgress = require('../models/userProgress.model')
 const { ObjectId } = require('mongodb');
-const Authorization = require('../helpers/authorization')
 
 
-router.post('/create_payment_url', Authorization.authorize(), function (req, res, next) {
+router.post('/create_payment_url',  function (req, res, next) {
     var ipAddr = req.headers['x-forwarded-for'] ||
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
@@ -90,7 +89,7 @@ router.post('/create_payment_url', Authorization.authorize(), function (req, res
         }
         else {
             console.log("success");
-            res.redirect(vnpUrl)
+            res.status(200).json({code: '00', data: vnpUrl})
         }
     })
 });
