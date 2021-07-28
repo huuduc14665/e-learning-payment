@@ -73,7 +73,7 @@ router.post('/create_payment_url', Authorization.authorize(), function (req, res
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: true });
 
     const payment = new Payment({
-        orderId: createDate,
+        orderId: orderId,
         amount: amount,
         currency: currCode,
         course: req.body.course,
