@@ -90,7 +90,7 @@ router.post('/create_payment_url', Authorization.authorize(), function (req, res
         }
         else {
             console.log("success");
-            res.status(200).json({code: '00', data: vnpUrl})
+            res.status(200).json({ code: '00', data: vnpUrl })
         }
     })
 });
@@ -147,60 +147,72 @@ router.get('/vnpay_ipn', function (req, res, next) {
     if (secureHash === checkSum) {
         var orderId = vnp_Params['vnp_TxnRef'];
         var rspCode = vnp_Params['vnp_ResponseCode'];
+        console.log(vnp_Params['vnp_CreateDate'])
         //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
         Payment.findOne({ orderId: vnp_Params['vnp_CreateDate'] }, function (err, payment) {
-            payment.paid = true;
-            payment.save(function (err, saved) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    User.findById(payment.user, function (err, user) {
+            if (err) console.log(err);
+            else {
+                if (payment) {
+                    payment.paid = true;
+                    payment.save(function (err, saved) {
                         if (err) {
                             console.log(err);
                         }
                         else {
-                            if (user) {
-                                Course.findById(payment.course, function (err, course) {
-                                    if (err) console.log(err);
-                                    else {
-                                        if (!course) console.log("The courseId in payment is not valid");
-                                        user.enrolledCourses.push(ObjectId(req.params.id));
-
-                                        user.save(function (err, updatedUser) {
-                                            if (err) {
-                                                next(err);
-                                            }
+                            User.findById(payment.user, function (err, user) {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    if (user) {
+                                        Course.findById(payment.course, function (err, course) {
+                                            if (err) console.log(err);
                                             else {
-                                                if (course.type == Constants.COURSE_TYPES.PROGRAMING) {
-                                                    userProgress = new UserProgress({
-                                                        user: res.locals.user.sub,
-                                                        course: course._id,
-                                                    });
-                                                    userProgress.save(function (err) {
-                                                        if (err) {
-                                                            console.log(err);
+                                                if (!course) console.log("The courseId in payment is not valid");
+                                                user.enrolledCourses.push(ObjectId(req.params.id));
+
+                                                user.save(function (err, updatedUser) {
+                                                    if (err) {
+                                                        next(err);
+                                                    }
+                                                    else {
+                                                        if (course.type == Constants.COURSE_TYPES.PROGRAMING) {
+                                                            userProgress = new UserProgress({
+                                                                user: res.locals.user.sub,
+                                                                course: course._id,
+                                                            });
+                                                            userProgress.save(function (err) {
+                                                                if (err) {
+                                                                    console.log(err);
+                                                                }
+                                                                else {
+                                                                    res.status(200).json({ RspCode: '00', Message: 'success' })
+                                                                }
+                                                            })
                                                         }
                                                         else {
                                                             res.status(200).json({ RspCode: '00', Message: 'success' })
                                                         }
-                                                    })
-                                                }
-                                                else {
-                                                    res.status(200).json({ RspCode: '00', Message: 'success' })
-                                                }
+                                                    }
+                                                })
                                             }
                                         })
                                     }
-                                })
-                            }
-                            else {
-                                console.log("Provided userId in payment is not valid" );
-                            }
+                                    else {
+                                        console.log("Provided userId in payment is not valid");
+                                    }
+                                }
+                            })
                         }
                     })
                 }
-            })
+                else {
+                    console.log("No paymen was found");
+                    res.status(200).json({ RspCode: '00', Message: 'success' });
+                    
+                }
+            }
+
         })
 
     }
