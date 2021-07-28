@@ -169,8 +169,9 @@ router.get('/vnpay_ipn', function (req, res, next) {
                                         Course.findById(payment.course, function (err, course) {
                                             if (err) console.log(err);
                                             else {
+                                                console.log(course);
                                                 if (!course) console.log("The courseId in payment is not valid");
-                                                user.enrolledCourses.push(ObjectId(req.params.id));
+                                                user.enrolledCourses.push(ObjectId(course._id));
 
                                                 user.save(function (err, updatedUser) {
                                                     if (err) {
@@ -192,6 +193,7 @@ router.get('/vnpay_ipn', function (req, res, next) {
                                                             })
                                                         }
                                                         else {
+                                                            console.log(updatedUser);
                                                             res.status(200).json({ RspCode: '00', Message: 'success' })
                                                         }
                                                     }
