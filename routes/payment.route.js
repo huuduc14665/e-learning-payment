@@ -27,7 +27,7 @@ router.post('/create_payment_url', Authorization.authorize(), function (req, res
     var date = new Date();
 
     var createDate = dateFormat(date, 'yyyymmddHHmmss');
-    var orderId = dateFormat(date, 'HHmmss');
+    var orderId = Date.now();
     var amount = req.body.amount;
     var bankCode = req.body.bankCode;
 
@@ -149,7 +149,7 @@ router.get('/vnpay_ipn', function (req, res, next) {
         var rspCode = vnp_Params['vnp_ResponseCode'];
         console.log(vnp_Params['vnp_CreateDate'])
         //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
-        Payment.findOne({ orderId: vnp_Params['vnp_CreateDate'] }, function (err, payment) {
+        Payment.findOne({ orderId: orderId }, function (err, payment) {
             if (err) console.log(err);
             else {
                 if (payment) {
