@@ -17,6 +17,9 @@ app.use(cors());
 //api route
 app.use("/api", routes)
 
+app.get('/', (req,res) => {
+  res.send("Welcome to E - Learning payment server!!!");
+})
 //use global error handler
 app.use(errorHandler)
 
@@ -35,7 +38,7 @@ mongoose.connection.once('open', function () {
 });
 
 //assign server port and start it
-const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
+const port = process.env.NODE_ENV === 'production' ? process.env.PORT : 3000;
 const server = app.listen(port, function () {
     console.log(`Server started with port: ${port}`)
 });
