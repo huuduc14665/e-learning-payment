@@ -96,36 +96,6 @@ router.post('/create_payment_url', Authorization.authorize(), function (req, res
     })
 });
 
-router.get('/vnpay_return', function (req, res, next) {
-    consle.log("vnpay_return");
-    // var vnp_Params = req.query;
-
-    // var secureHash = vnp_Params['vnp_SecureHash'];
-
-    // delete vnp_Params['vnp_SecureHash'];
-    // delete vnp_Params['vnp_SecureHashType'];
-
-    // vnp_Params = sortObject(vnp_Params);
-
-    // var config = require('config');
-    // var tmnCode = config.get('vnp_TmnCode');
-    // var secretKey = config.get('vnp_HashSecret');
-
-    // var querystring = require('qs');
-    // var signData = secretKey + querystring.stringify(vnp_Params, { encode: false });
-
-    // var sha256 = require('sha256');
-
-    // var checkSum = sha256(signData);
-
-    // if (secureHash === checkSum) {
-    //     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-
-    //     res.render('success', { code: vnp_Params['vnp_ResponseCode'] })
-    // } else {
-    //     res.render('success', { code: '97' })
-    // }
-});
 
 router.get('/vnpay_ipn', function (req, res, next) {
     var vnp_Params = req.query;
