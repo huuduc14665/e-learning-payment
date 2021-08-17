@@ -1,8 +1,0 @@
-{
-    "connectionString": "mongodb+srv://MongoDbNHHD:SfDthhogpRoKJz8z@e-learning-cluster.oa8ny.mongodb.net/elearning?retryWrites=true&w=majority",
-    "secret": "DAMNGUYENTRUNGTRUONG20051999",
-    "vnp_TmnCode": "5OD453VA",
-    "vnp_HashSecret": "ZOAHALVVTTEMZYVFPGVSPRVGTWSJPSOE",
-    "vnp_Url": "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
-    "vnp_ReturnUrl": "http://localhost:4200/checkout/result"
-}
